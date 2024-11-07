@@ -1,0 +1,57 @@
+/* src/Header.css */
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+.header {
+    background-color: #343a40;
+    /* Dark background color for a professional look */
+    color: white;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    /* Subtle shadow for depth */
+}
+
+.header-content {
+    width: 100%;
+    max-width: 1200px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    margin: 0;
+    font-size: 1.5rem;
+    /* Slightly larger font size for prominence */
+}
+
+.nav-links {
+    display: flex;
+}
+
+.nav-link {
+    color: white;
+    text-decoration: none;
+    margin-left: 20px;
+    font-size: 1rem;
+    /* Consistent font size */
+    padding: 5px 10px;
+    /* Add padding for better click area */
+    border-radius: 4px;
+    /* Rounded corners for buttons */
+    transition: background-color 0.3s ease, color 0.3s ease;
+    /* Smooth transition for hover effects */
+}
+
+.nav-link:hover {
+    background-color: #495057;
+    /* Slightly lighter background on hover */
+    color: #f8f9fa;
+    /* Lighter text color on hover */
+}
