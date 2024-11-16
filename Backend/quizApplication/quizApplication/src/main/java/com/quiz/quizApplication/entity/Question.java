@@ -12,6 +12,7 @@ import java.util.List;
 @Entity
 public class Question {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long questionId;
     String questionText;
     String correctAns;
