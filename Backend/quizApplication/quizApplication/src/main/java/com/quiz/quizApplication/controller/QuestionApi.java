@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/question")
 public class QuestionApi {
@@ -32,10 +34,15 @@ public class QuestionApi {
         Long questionId= questionService.addQuestion(question);
         return ResponseEntity.ok(new ApiResponse<>(true,"Added question successfully",questionId));
     }
-    @PutMapping("/updateQuestionOption")
-    public ResponseEntity<ApiResponse<String>> addOptionsForQuestion(@RequestParam Long qstId, @RequestBody Options options) throws QuizException {
-        questionService.addOptionForQuestion(qstId,options);
+    @PutMapping("/updateQuestionWithNewOption")
+    public ResponseEntity<ApiResponse<String>> addOptionsForQuestion(@RequestParam Long qstId, @RequestBody List<Options> optionsList) throws QuizException {
+        questionService.addOptionForQuestion(qstId,optionsList);
         return ResponseEntity.ok(new ApiResponse<>(true,"Successfully updated the option of the question","Option Updated"));
+    }
+    @PutMapping("/updateQuestionWithExistingOption")
+    public ResponseEntity<ApiResponse<String>> addExistingOptionsForQuestion(@RequestParam Long qstId, @RequestBody List<Long> optionsList) throws QuizException {
+        String msg=questionService.addExistingOptionForQuestion(qstId,optionsList);
+        return ResponseEntity.ok(new ApiResponse<>(true,"Successfully updated the existing option of the question",msg));
     }
     @DeleteMapping("/deleteQuestion/{qstId}")
     public ResponseEntity<ApiResponse<String>> deleteQuestion(@PathVariable Long qstId){

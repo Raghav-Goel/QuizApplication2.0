@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -24,15 +25,13 @@ public class QuestionServiceImpl implements QuestionService {
     @Override
     public Question getQuestionById(Long id) throws QuizException {
         Optional<Question> optionalQuestion=questionRepo.getQuestionByQuestionId(id);
-        Question question=optionalQuestion.orElseThrow(()->new QuizException(environment.getProperty("Service.QUESTION_NOT_FOUND")));
-        return question;
+        return optionalQuestion.orElseThrow(()->new QuizException(environment.getProperty("Service.QUESTION_NOT_FOUND")));
     }
 
     @Override
     public Question getQuestionByDescription(String desp) throws QuizException {
         Optional<Question> optionalQuestion=questionRepo.getQuestionByDescription(desp);
-        Question question=optionalQuestion.orElseThrow(()->new QuizException(environment.getProperty("Service.QUESTION_DESCRIPTION_NOT_FOUND")));
-        return question;
+        return optionalQuestion.orElseThrow(()->new QuizException(environment.getProperty("Service.QUESTION_DESCRIPTION_NOT_FOUND")));
     }
 
     @Override
@@ -49,13 +48,23 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Override
     @Transactional
-    public String addOptionForQuestion(Long qstId, Options options) throws QuizException {
+    public String addOptionForQuestion(Long qstId, List<Options> optionsList) throws QuizException {
         //For now we are able to add duplicates as well, we needed to implement the login in which duplicates are not allowed.
         Question question=getQuestionById(qstId);
-        question.getOptionsList().add(options);
+        for(Options options:optionsList){
+            question.getOptionsList().add(options);
+        }
         return "Added option to the existing question successfully.";
     }
-
+    @Override
+    public String addExistingOptionForQuestion(Long qstId, List<Long> optionsList) throws QuizException {
+        Question question=getQuestionById(qstId);
+        for(Long optionId:optionsList){
+            Options options=optionService.getOptionsById(optionId);
+            question.getOptionsList().add(options);
+        }
+        return "Added existing option to the existing question successfully.";
+    }
     @Override
     public String deleteQuestionById(Long qstId) {
         questionRepo.deleteById(qstId);
@@ -70,4 +79,6 @@ public class QuestionServiceImpl implements QuestionService {
         optionService.deleteOption(optId);
         return "Option removed Successfully";
     }
+
+
 }

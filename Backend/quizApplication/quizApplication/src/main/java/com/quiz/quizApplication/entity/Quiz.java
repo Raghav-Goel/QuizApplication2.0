@@ -13,6 +13,7 @@ import java.util.List;
 @Entity
 public class Quiz {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long quizId;
     String title;
     String level;
