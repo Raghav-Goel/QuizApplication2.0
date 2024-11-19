@@ -11,8 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class QuestionServiceImpl implements QuestionService {
@@ -48,7 +48,7 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Override
     @Transactional
-    public String addOptionForQuestion(Long qstId, List<Options> optionsList) throws QuizException {
+    public String addOptionForQuestion(Long qstId, Set<Options> optionsList) throws QuizException {
         //For now we are able to add duplicates as well, we needed to implement the login in which duplicates are not allowed.
         Question question=getQuestionById(qstId);
         for(Options options:optionsList){
@@ -57,7 +57,7 @@ public class QuestionServiceImpl implements QuestionService {
         return "Added option to the existing question successfully.";
     }
     @Override
-    public String addExistingOptionForQuestion(Long qstId, List<Long> optionsList) throws QuizException {
+    public String addExistingOptionForQuestion(Long qstId, Set<Long> optionsList) throws QuizException {
         Question question=getQuestionById(qstId);
         for(Long optionId:optionsList){
             Options options=optionService.getOptionsById(optionId);
@@ -65,6 +65,14 @@ public class QuestionServiceImpl implements QuestionService {
         }
         return "Added existing option to the existing question successfully.";
     }
+
+    @Override
+    public String updateQuestionDescription(Long qstId, String qstDescp) throws QuizException {
+        Question question=getQuestionById(qstId);
+        question.setQuestionText(qstDescp);
+        return "Updated question description";
+    }
+
     @Override
     public String deleteQuestionById(Long qstId) {
         questionRepo.deleteById(qstId);

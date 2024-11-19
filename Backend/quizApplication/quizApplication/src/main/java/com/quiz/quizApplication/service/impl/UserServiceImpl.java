@@ -11,8 +11,8 @@ import org.springframework.core.env.Environment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 @Transactional
@@ -64,7 +64,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserQuiz> getUserQuizDetails(Long userId) {
+    public Set<UserQuiz> getUserQuizDetails(Long userId) {
         return null;
     }
 }

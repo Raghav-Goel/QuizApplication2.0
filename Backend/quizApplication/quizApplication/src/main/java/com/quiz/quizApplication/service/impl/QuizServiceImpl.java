@@ -5,13 +5,16 @@ import com.quiz.quizApplication.entity.Quiz;
 import com.quiz.quizApplication.exception.QuizException;
 import com.quiz.quizApplication.repository.QuizRepo;
 import com.quiz.quizApplication.service.QuestionService;
+import com.quiz.quizApplication.service.QuizQuestionService;
 import com.quiz.quizApplication.service.QuizService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 @Transactional
@@ -21,6 +24,8 @@ public class QuizServiceImpl implements QuizService {
     QuizRepo quizRepo;
     @Autowired
     QuestionService questionService;
+    @Autowired
+    QuizQuestionService quizQuestionService;
     @Override
     public Quiz getQuizById(Long id) throws QuizException {
         Optional<Quiz> optionalQuiz=quizRepo.findById(id);
@@ -35,12 +40,44 @@ public class QuizServiceImpl implements QuizService {
     }
 
     @Override
-    public String addQuestionToQuiz(Long quizId, List<Long> qstIdList) throws QuizException {
+    public String addExistingQuestionToQuiz(Long quizId, Set<Long> qstIdList) throws QuizException {
         Quiz quiz=getQuizById(quizId);
+        Set<Long> questionAlreadyPresentInQuiz=new HashSet<>();
+        Set<Long> questionNotPresentInQuiz=new HashSet<>();
         for(Long qstId:qstIdList){
-            Question question= questionService.getQuestionById(qstId);
+            boolean isQuestionInQuiz=quizQuestionService.checkIfQuestionPresentInQuiz(quizId,qstId);
+            if(isQuestionInQuiz)questionAlreadyPresentInQuiz.add(qstId);
+            else{
+                Question question= questionService.getQuestionById(qstId);
+                quiz.getQuestionList().add(question);
+                questionNotPresentInQuiz.add(qstId);
+            }
+        }
+        String msg="";
+        if(!questionAlreadyPresentInQuiz.isEmpty())msg+=questionAlreadyPresentInQuiz+": These questions was already present in quiz.";
+        if(!questionNotPresentInQuiz.isEmpty()){
+            if(!msg.isEmpty())msg=msg+" and ";
+            msg+=questionNotPresentInQuiz+": Added these questions in the list.";
+        }
+        return msg;
+    }
+
+    @Override
+    public String addNewQuestionToQuiz(Long quizId, Set<Question> qstList) throws QuizException {
+        Quiz quiz=getQuizById(quizId);
+        for(Question question:qstList){
             quiz.getQuestionList().add(question);
         }
-        return "Added question successfully.";
+        return "Added new question successfully to quiz";
+    }
+
+    @Override
+    public String deleteQuestionFromQuiz(Long quizId, Set<Long> qstIdList) throws QuizException {
+        Quiz quiz=getQuizById(quizId);
+        for(Long qstId:qstIdList){
+            Question question=questionService.getQuestionById(qstId);
+            quiz.getQuestionList().remove(question);
+        }
+        return "Questions removed successfully from quiz";
     }
 }

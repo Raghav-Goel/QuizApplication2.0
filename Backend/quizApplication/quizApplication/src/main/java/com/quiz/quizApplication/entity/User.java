@@ -8,7 +8,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Data
@@ -26,8 +28,8 @@ public class User {
     String phoneNumber;
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name="user_id")
-    List<UserQuiz> userQuiz=new ArrayList<>();
+    Set<UserQuiz> userQuiz=new HashSet<>();
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name="user_quiz" , joinColumns = @JoinColumn(name="user_id"),inverseJoinColumns = @JoinColumn(name="quiz_id"))
-    List<Quiz> submittedQuizzes=new ArrayList<>();
+    Set<Quiz> submittedQuizzes=new HashSet<>();
 }

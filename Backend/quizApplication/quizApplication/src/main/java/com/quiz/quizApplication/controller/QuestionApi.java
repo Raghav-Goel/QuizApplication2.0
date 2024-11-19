@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/question")
@@ -35,14 +36,19 @@ public class QuestionApi {
         return ResponseEntity.ok(new ApiResponse<>(true,"Added question successfully",questionId));
     }
     @PutMapping("/updateQuestionWithNewOption")
-    public ResponseEntity<ApiResponse<String>> addOptionsForQuestion(@RequestParam Long qstId, @RequestBody List<Options> optionsList) throws QuizException {
+    public ResponseEntity<ApiResponse<String>> addOptionsForQuestion(@RequestParam Long qstId, @RequestBody Set<Options> optionsList) throws QuizException {
         questionService.addOptionForQuestion(qstId,optionsList);
         return ResponseEntity.ok(new ApiResponse<>(true,"Successfully updated the option of the question","Option Updated"));
     }
     @PutMapping("/updateQuestionWithExistingOption")
-    public ResponseEntity<ApiResponse<String>> addExistingOptionsForQuestion(@RequestParam Long qstId, @RequestBody List<Long> optionsList) throws QuizException {
+    public ResponseEntity<ApiResponse<String>> addExistingOptionsForQuestion(@RequestParam Long qstId, @RequestBody Set<Long> optionsList) throws QuizException {
         String msg=questionService.addExistingOptionForQuestion(qstId,optionsList);
         return ResponseEntity.ok(new ApiResponse<>(true,"Successfully updated the existing option of the question",msg));
+    }
+    @PutMapping("/updateQuestionDescription")
+    public ResponseEntity<ApiResponse<String>> updateQuestionDescription(@RequestParam Long qstId,@RequestParam String qstDescp) throws QuizException {
+        String msg=questionService.updateQuestionDescription(qstId,qstDescp);
+        return  ResponseEntity.ok(new ApiResponse<>(true,"Updated the question description successfully",msg));
     }
     @DeleteMapping("/deleteQuestion/{qstId}")
     public ResponseEntity<ApiResponse<String>> deleteQuestion(@PathVariable Long qstId){

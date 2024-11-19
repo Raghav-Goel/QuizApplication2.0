@@ -6,7 +6,9 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -20,5 +22,5 @@ public class Quiz {
     LocalTime quizTime;
     @ManyToMany(cascade= CascadeType.ALL)
     @JoinTable(name="quiz_question", joinColumns = @JoinColumn(name="quiz_id"), inverseJoinColumns = @JoinColumn(name="question_id"))
-    List<Question> questionList=new ArrayList<>();
+    Set<Question> questionList=new HashSet<>();
 }

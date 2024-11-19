@@ -7,16 +7,16 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 @Entity
-public class QuestionOptions {
+public class QuizQuestion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long questionOptionId;
+    Long quizQuestionId;
+
+    @ManyToOne
+    @JoinColumn(name = "quiz_id")
+    Quiz quiz;
 
     @ManyToOne
     @JoinColumn(name = "question_id")
-    private Question question;
-
-    @ManyToOne
-    @JoinColumn(name = "option_id")
-    private Options option;
+    Question question;
 }

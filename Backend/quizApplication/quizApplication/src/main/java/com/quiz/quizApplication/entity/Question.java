@@ -5,7 +5,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @NoArgsConstructor
 @Data
@@ -18,6 +20,6 @@ public class Question {
     String correctAns;
     @ManyToMany(cascade= CascadeType.ALL)
     @JoinTable(name="question_options", joinColumns = @JoinColumn(name="question_id"), inverseJoinColumns = @JoinColumn(name="option_id"))
-    List<Options> optionsList=new ArrayList<>();
+    Set<Options> optionsList=new HashSet<>();
 
 }

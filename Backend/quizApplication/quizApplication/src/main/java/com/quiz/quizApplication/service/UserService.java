@@ -4,8 +4,7 @@ import com.quiz.quizApplication.entity.Quiz;
 import com.quiz.quizApplication.entity.User;
 import com.quiz.quizApplication.entity.UserQuiz;
 import com.quiz.quizApplication.exception.QuizException;
-
-import java.util.List;
+import java.util.Set;
 
 public interface UserService {
     public User getUserById(Long userId) throws QuizException;
@@ -14,5 +13,5 @@ public interface UserService {
     public User addQuizDetails(Long userId,Quiz quiz);
     public String updateEmailId(Long userId,String newEmailId)  throws QuizException;
     public String updatePassword(Long userId,String password);
-    public List<UserQuiz> getUserQuizDetails(Long userId);
+    public Set<UserQuiz> getUserQuizDetails(Long userId);
 }
