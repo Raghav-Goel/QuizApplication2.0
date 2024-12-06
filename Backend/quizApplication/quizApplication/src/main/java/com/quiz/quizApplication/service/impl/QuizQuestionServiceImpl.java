@@ -16,4 +16,9 @@ public class QuizQuestionServiceImpl implements QuizQuestionService {
         System.out.println(count);
         return count>0;
     }
+    @Override
+    public boolean isQuestionPresentInAnyQuiz(Long questionId) {
+        //Checks if a specific question is present in any quiz.
+        return quizQuestionRepo.isQuestionInAnyQuiz(questionId);
+    }
 }

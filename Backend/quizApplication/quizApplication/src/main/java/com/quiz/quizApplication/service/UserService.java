@@ -10,8 +10,9 @@ public interface UserService {
     public User getUserById(Long userId) throws QuizException;
     public User getUserByEmail(String emailId) throws QuizException;
     public Long addUser(User user) throws QuizException;
-    public User addQuizDetails(Long userId,Quiz quiz);
+    public String addQuizDetails(Long userId,Long quizId) throws QuizException;
     public String updateEmailId(Long userId,String newEmailId)  throws QuizException;
     public String updatePassword(Long userId,String password);
-    public Set<UserQuiz> getUserQuizDetails(Long userId);
+    public Set<UserQuiz> getUserAllQuizDetails(Long userId);
+    public Set<UserQuiz> getUserSpecificQuizDetails(Long userId,Long quizId);
 }

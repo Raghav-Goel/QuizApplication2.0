@@ -43,4 +43,9 @@ public class QuizApi {
         String msg=quizService.deleteQuestionFromQuiz(quizId,qstIdList);
         return ResponseEntity.ok(new ApiResponse<>(true,"Question got removed successfully from the quiz.",msg));
     }
+    @DeleteMapping("/deleteQuiz/{quizId}")
+    public ResponseEntity<ApiResponse<String>> deleteQuizFromId(@PathVariable Long quizId){
+        String msg= quizService.deleteQuizFromid(quizId);
+        return ResponseEntity.ok(new ApiResponse<>(true,"Quiz got deleted successfully",msg));
+    }
 }

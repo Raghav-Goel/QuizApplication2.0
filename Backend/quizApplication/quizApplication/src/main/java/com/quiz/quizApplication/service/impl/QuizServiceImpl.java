@@ -11,7 +11,6 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -26,6 +25,11 @@ public class QuizServiceImpl implements QuizService {
     QuestionService questionService;
     @Autowired
     QuizQuestionService quizQuestionService;
+    @Override
+    public boolean isQuestionPresentInAnyQuiz(Long questionId) {
+        //Checks if a specific question is present in any quiz.
+        return quizQuestionService.isQuestionPresentInAnyQuiz(questionId);
+    }
     @Override
     public Quiz getQuizById(Long id) throws QuizException {
         Optional<Quiz> optionalQuiz=quizRepo.findById(id);
@@ -77,7 +81,17 @@ public class QuizServiceImpl implements QuizService {
         for(Long qstId:qstIdList){
             Question question=questionService.getQuestionById(qstId);
             quiz.getQuestionList().remove(question);
+            if(!isQuestionPresentInAnyQuiz(qstId))questionService.deleteQuestionById(qstId);
         }
+
         return "Questions removed successfully from quiz";
     }
+
+    @Override
+    public String deleteQuizFromid(Long quizId) {
+        quizRepo.deleteById(quizId);
+        return "Quiz with quizId: "+quizId+" got deleted successfully";
+    }
+
+
 }

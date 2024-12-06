@@ -5,6 +5,7 @@ import com.quiz.quizApplication.entity.User;
 import com.quiz.quizApplication.entity.UserQuiz;
 import com.quiz.quizApplication.exception.QuizException;
 import com.quiz.quizApplication.repository.UserRepo;
+import com.quiz.quizApplication.service.QuizService;
 import com.quiz.quizApplication.service.UserService;
 import jakarta.transaction.Transactional;
 import org.springframework.core.env.Environment;
@@ -19,6 +20,8 @@ import java.util.Set;
 public class UserServiceImpl implements UserService {
     @Autowired
     UserRepo userRepo;
+    @Autowired
+    QuizService quizService;
     @Autowired
     Environment environment;
     @Override
@@ -47,8 +50,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User addQuizDetails(Long userId,Quiz quiz) {
-        return null;
+    public String addQuizDetails(Long userId,Long quizId) throws QuizException {
+        User user=getUserById(userId);
+        Quiz quiz=quizService.getQuizById(quizId);
+        user.getSubmittedQuizzes().add(quiz);
+        return "Quiz has been added successfully to the user.";
     }
 
     @Override
@@ -64,7 +70,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Set<UserQuiz> getUserQuizDetails(Long userId) {
+    public Set<UserQuiz> getUserAllQuizDetails(Long userId) {
+        return null;
+    }
+
+    @Override
+    public Set<UserQuiz> getUserSpecificQuizDetails(Long userId, Long quizId) {
         return null;
     }
 }
