@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @Entity
 public class UserQuiz {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long userQuizId;
 
     @ManyToOne
@@ -20,5 +21,5 @@ public class UserQuiz {
     Quiz quiz;
 
     Integer marks;
-    boolean attempted;
+    Integer attemptNumber;
 }

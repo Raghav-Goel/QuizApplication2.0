@@ -10,4 +10,6 @@ import java.util.Optional;
 public interface UserQuizService {
     public List<UserQuiz> getUserAllQuizDetails(Long userId) throws QuizException;
     public List<UserQuiz> getUserSpecificQuizDetails(Long userId,Long quizId) throws QuizException;
+
+    void updateMarks(Long userId, Long quizId, int marks) throws QuizException;
 }

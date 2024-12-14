@@ -1,5 +1,6 @@
 package com.quiz.quizApplication.controller;
 
+import com.quiz.quizApplication.Utility.Response;
 import com.quiz.quizApplication.entity.Question;
 import com.quiz.quizApplication.entity.Quiz;
 import com.quiz.quizApplication.exception.QuizException;
@@ -22,6 +23,11 @@ public class QuizApi {
     public ResponseEntity<ApiResponse<Quiz>> getQuizById(@PathVariable Long quizId) throws QuizException {
         Quiz quiz=quizService.getQuizById(quizId);
         return ResponseEntity.ok(new ApiResponse<>(true,"Quiz fetched through quiz id successfully.",quiz));
+    }
+    @GetMapping("/calculateQuizScore")
+    public ResponseEntity<ApiResponse<Integer>> calculateQuizScore(@RequestBody List<Response> responseList) throws QuizException {
+        int marks=quizService.calculateQuizScore(responseList);
+        return ResponseEntity.ok(new ApiResponse<>(true,"Quiz marks for the provided response is"+marks,marks));
     }
     @PostMapping("/createQuiz")
     public ResponseEntity<ApiResponse<Long>> createQuiz(@RequestBody Quiz quiz){

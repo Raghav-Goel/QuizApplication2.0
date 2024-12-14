@@ -1,17 +1,20 @@
 package com.quiz.quizApplication.service.impl;
 
+import com.quiz.quizApplication.Utility.Response;
 import com.quiz.quizApplication.entity.Quiz;
 import com.quiz.quizApplication.entity.User;
 import com.quiz.quizApplication.entity.UserQuiz;
 import com.quiz.quizApplication.exception.QuizException;
 import com.quiz.quizApplication.repository.UserRepo;
 import com.quiz.quizApplication.service.QuizService;
+import com.quiz.quizApplication.service.UserQuizService;
 import com.quiz.quizApplication.service.UserService;
 import jakarta.transaction.Transactional;
 import org.springframework.core.env.Environment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -24,6 +27,8 @@ public class UserServiceImpl implements UserService {
     QuizService quizService;
     @Autowired
     Environment environment;
+    @Autowired
+    UserQuizService userQuizService;
     @Override
     public User getUserById(Long userId) throws QuizException {
         Optional<User> optionalUser=userRepo.findById(userId);
@@ -38,6 +43,22 @@ public class UserServiceImpl implements UserService {
         Optional<User> optionalUser=userRepo.findByEmailId(emailId);
         return optionalUser.orElseThrow(()->new QuizException(environment.getProperty("Service.USER_EMAIL_NOT_FOUND")));
     }
+    @Override
+    public List<UserQuiz> getUserAllQuizDetails(Long userId) throws QuizException {
+        return userQuizService.getUserAllQuizDetails(userId);
+    }
+
+    @Override
+    public List<UserQuiz> getUserSpecificQuizDetails(Long userId, Long quizId) throws QuizException {
+        return userQuizService.getUserSpecificQuizDetails(userId,quizId);
+    }
+
+    @Override
+    public int evaluateQuizResponse(Long userId, Long quizId, List<Response> responseList) throws QuizException {
+        int marks=quizService.calculateQuizScore(responseList);
+        userQuizService.updateMarks(userId,quizId,marks);
+        return marks;
+    }
 
     @Override
     public Long addUser(User newUser) throws QuizException {
@@ -51,6 +72,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String addQuizDetails(Long userId,Long quizId) throws QuizException {
+        //todo: needed to add a check whether the quiz is already added to user or not.
         User user=getUserById(userId);
         Quiz quiz=quizService.getQuizById(quizId);
         user.getSubmittedQuizzes().add(quiz);
@@ -69,13 +91,4 @@ public class UserServiceImpl implements UserService {
         return null;
     }
 
-    @Override
-    public Set<UserQuiz> getUserAllQuizDetails(Long userId) {
-        return null;
-    }
-
-    @Override
-    public Set<UserQuiz> getUserSpecificQuizDetails(Long userId, Long quizId) {
-        return null;
-    }
 }

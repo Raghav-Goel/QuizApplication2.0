@@ -1,5 +1,6 @@
 package com.quiz.quizApplication.service.impl;
 
+import com.quiz.quizApplication.Utility.Response;
 import com.quiz.quizApplication.entity.Options;
 import com.quiz.quizApplication.entity.Question;
 import com.quiz.quizApplication.exception.QuizException;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -33,6 +35,14 @@ public class QuestionServiceImpl implements QuestionService {
         Optional<Question> optionalQuestion=questionRepo.getQuestionByDescription(desp);
         return optionalQuestion.orElseThrow(()->new QuizException(environment.getProperty("Service.QUESTION_DESCRIPTION_NOT_FOUND")));
     }
+
+    @Override
+    public boolean checkAnsForResponse(Response response) throws QuizException {
+        Long qstId=response.getQuestionId();
+        Question question=getQuestionById(qstId);
+        return response.getResponseAns().equals(question.getCorrectAns());
+    }
+
 
     @Override
     public Long addQuestion(Question question) {

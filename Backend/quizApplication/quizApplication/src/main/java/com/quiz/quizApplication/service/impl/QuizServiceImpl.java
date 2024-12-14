@@ -1,5 +1,6 @@
 package com.quiz.quizApplication.service.impl;
 
+import com.quiz.quizApplication.Utility.Response;
 import com.quiz.quizApplication.entity.Question;
 import com.quiz.quizApplication.entity.Quiz;
 import com.quiz.quizApplication.exception.QuizException;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -35,7 +37,14 @@ public class QuizServiceImpl implements QuizService {
         Optional<Quiz> optionalQuiz=quizRepo.findById(id);
         return optionalQuiz.orElseThrow(()->new QuizException("There is no Quiz with quiz id: "+id));
     }
-
+    @Override
+    public int calculateQuizScore(List<Response> responseList) throws QuizException {
+        int marks=0;
+        for(Response response:responseList){
+            if(questionService.checkAnsForResponse(response))marks++;
+        }
+        return marks;
+    }
     @Override
     public Long createQuiz(Quiz quiz) {
 //        quiz.setQuestionList(questionList);
@@ -92,6 +101,5 @@ public class QuizServiceImpl implements QuizService {
         quizRepo.deleteById(quizId);
         return "Quiz with quizId: "+quizId+" got deleted successfully";
     }
-
 
 }

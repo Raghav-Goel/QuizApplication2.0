@@ -1,5 +1,6 @@
 package com.quiz.quizApplication.controller;
 
+import com.quiz.quizApplication.Utility.Response;
 import com.quiz.quizApplication.entity.Options;
 import com.quiz.quizApplication.entity.Question;
 import com.quiz.quizApplication.entity.User;
@@ -30,6 +31,7 @@ public class QuestionApi {
 //        return ResponseEntity.ok(new ApiResponse<>(true, "Question found", question));
         return new ResponseEntity<>(new ApiResponse<>(true, "Question found", question),HttpStatus.OK);
     }
+
     @PostMapping
     public ResponseEntity<ApiResponse<Long>> saveQuestion(@RequestBody Question question){
         Long questionId= questionService.addQuestion(question);
