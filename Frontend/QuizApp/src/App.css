@@ -1,3 +1,11 @@
 .container{
     width: 100vw;
 }
+.wrapper{
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+.appMain{
+    flex:1;
+}

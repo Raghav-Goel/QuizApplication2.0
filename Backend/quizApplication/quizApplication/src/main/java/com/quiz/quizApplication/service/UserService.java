@@ -1,5 +1,6 @@
 package com.quiz.quizApplication.service;
 
+import com.quiz.quizApplication.Utility.PageResponse;
 import com.quiz.quizApplication.Utility.Response;
 import com.quiz.quizApplication.entity.Quiz;
 import com.quiz.quizApplication.entity.User;
@@ -10,6 +11,8 @@ import java.util.List;
 import java.util.Set;
 
 public interface UserService {
+
+    public PageResponse<User> getAllUsers(int pageNum, int pageSize);
     public User getUserById(Long userId) throws QuizException;
     public User getUserByEmail(String emailId) throws QuizException;
     public List<UserQuiz> getUserAllQuizDetails(Long userId) throws QuizException;

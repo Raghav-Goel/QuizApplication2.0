@@ -1,5 +1,6 @@
 package com.quiz.quizApplication.service;
 
+import com.quiz.quizApplication.Utility.PageResponse;
 import com.quiz.quizApplication.Utility.Response;
 import com.quiz.quizApplication.entity.Question;
 import com.quiz.quizApplication.entity.Quiz;
@@ -11,6 +12,7 @@ import java.util.Set;
 
 public interface QuizService {
     boolean isQuestionPresentInAnyQuiz(Long questionId);
+    public PageResponse<Quiz> getAllQuiz(int pageNum, int pageSize);
     public Quiz getQuizById(Long id) throws QuizException;
     int calculateQuizScore(List<Response> responseList) throws QuizException;
 

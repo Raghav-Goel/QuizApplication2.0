@@ -3,13 +3,14 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./Login.css";
 import { getUserByEmailId } from "../../handleData/ApiService";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 function login() {
   const isLogged=useDispatch();
   const emailElement = useRef("");
   const passwordElement = useRef("");
   const [flag, setFlag] = useState(false);
   const [passwordVisible, setPasswordVisible] = useState(false);
-
+  const navigate = useNavigate();
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
   }
@@ -26,6 +27,7 @@ function login() {
           if(response.data.password==password){
             setFlag(false);
             isLogged({type:"true"});
+            navigate("/");
           }else{
             setFlag(true);
           }
@@ -39,7 +41,6 @@ function login() {
         setFlag(true);
       });
   }
-  const isLoggedww = useSelector((quizStore) => quizStore.isLoggedIn);
   return (
     <div className="main">
       <div className="login-container">
@@ -80,12 +81,8 @@ function login() {
               Please provide correct emailId or Password
             </p>
           )}
-          <a href="#" className="forgot-password">
-            Forgot your password?
-          </a>
         </form>
       </div>
-      <h1>{isLoggedww}</h1>
     </div>
   );
 }

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import QuizCard from "../quizCard/QuizCard";
 import "bootstrap/dist/css/bootstrap.min.css";
-import "./Dashboard.css"; // Custom styling
+import "./Dashboard.css";
 
 const Dashboard = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);

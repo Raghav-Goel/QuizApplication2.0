@@ -1,5 +1,6 @@
 package com.quiz.quizApplication.controller;
 
+import com.quiz.quizApplication.Utility.PageResponse;
 import com.quiz.quizApplication.Utility.Response;
 import com.quiz.quizApplication.entity.Options;
 import com.quiz.quizApplication.entity.Question;
@@ -19,6 +20,15 @@ import java.util.Set;
 public class QuestionApi {
     @Autowired
     QuestionService questionService;
+
+    @GetMapping("/getAllQuestions")
+    public ResponseEntity<ApiResponse<PageResponse<Question>>> getAllQuestions(
+            @RequestParam(value = "pageNumber",defaultValue = "0",required = false) int pageNumber,
+            @RequestParam(value = "pageSize",defaultValue = "5",required = false) int pageSize
+    ){
+        PageResponse<Question> pageResponse=questionService.getAllQuestions(pageNumber,pageSize);
+        return new ResponseEntity<>(new ApiResponse<>(true,"Getting all questions",pageResponse), HttpStatus.OK);
+    }
 
     @GetMapping("getQuestionDetails/{qstId}")
     public ResponseEntity<ApiResponse<Question>> getQuestionById(@PathVariable Long qstId) throws QuizException {

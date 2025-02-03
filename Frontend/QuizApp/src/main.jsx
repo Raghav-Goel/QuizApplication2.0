@@ -9,6 +9,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import quizStore from './components/store/index.js'
 import About from './components/about/About.jsx'
+import CreateQuiz from './components/createQuiz/CreateQuiz.jsx'
 const router = createBrowserRouter([
   {
     path: "/",
@@ -18,6 +19,7 @@ const router = createBrowserRouter([
       { path: "/login", element: <Login /> },
       { path: "/signup", element: <Registration /> },
       { path: "/about", element: <About /> },
+      { path: "/createQuiz", element: <CreateQuiz /> },
     ],
   },
 ]);

@@ -1,10 +1,10 @@
 package com.quiz.quizApplication.controller;
 
+import com.quiz.quizApplication.Utility.PageResponse;
 import com.quiz.quizApplication.Utility.Response;
 import com.quiz.quizApplication.entity.User;
 import com.quiz.quizApplication.exception.QuizException;
 import com.quiz.quizApplication.service.UserService;
-import jakarta.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,9 +15,17 @@ import java.util.List;
 @RestController
 @RequestMapping("/user")
 @CrossOrigin
-public class userApi {
+public class UserApi {
     @Autowired
     UserService userService;
+    @GetMapping("/getAllUsers")
+    public ResponseEntity<ApiResponse<PageResponse<User>>> getAllUser(
+            @RequestParam(value = "pageNumber",defaultValue = "0",required = false) int pageNumber,
+            @RequestParam(value = "pageSize",defaultValue = "5",required = false) int pageSize
+    ){
+        PageResponse<User> pageResponse=userService.getAllUsers(pageNumber,pageSize);
+        return new ResponseEntity<>(new ApiResponse<>(true,"Getting all users",pageResponse), HttpStatus.OK);
+    }
     @GetMapping("/getUser/{id}")
     public ResponseEntity<ApiResponse<User>> getUserById(@PathVariable Long id) throws QuizException {
         User user=userService.getUserById(id);

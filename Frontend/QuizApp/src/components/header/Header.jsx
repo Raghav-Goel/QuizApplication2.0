@@ -8,6 +8,9 @@ const Header = () => {
       <div className="header-content">
         <h1 className="logo">Quiz Masters</h1>
         <nav className="nav-links">
+          <a href="/createQuiz" className="nav-link special-link">
+            Create Quiz
+          </a>
           <a href="/" className="nav-link">
             Home
           </a>

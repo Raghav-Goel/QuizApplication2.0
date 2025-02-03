@@ -1,5 +1,6 @@
 package com.quiz.quizApplication.service.impl;
 
+import com.quiz.quizApplication.Utility.PageResponse;
 import com.quiz.quizApplication.Utility.Response;
 import com.quiz.quizApplication.entity.Quiz;
 import com.quiz.quizApplication.entity.User;
@@ -10,10 +11,14 @@ import com.quiz.quizApplication.service.QuizService;
 import com.quiz.quizApplication.service.UserQuizService;
 import com.quiz.quizApplication.service.UserService;
 import jakarta.transaction.Transactional;
+import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties;
 import org.springframework.core.env.Environment;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.awt.print.Pageable;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -29,6 +34,22 @@ public class UserServiceImpl implements UserService {
     Environment environment;
     @Autowired
     UserQuizService userQuizService;
+
+    @Override
+    public PageResponse<User> getAllUsers(int pageNum, int pageSize) {
+        PageRequest pageRequest= PageRequest.of(pageNum,pageSize);
+        Page<User> page=userRepo.findAll(pageRequest);
+        PageResponse<User> pageResponse=new PageResponse<>();
+        pageResponse.setList(page.getContent());
+        pageResponse.setPageNumber(page.getNumber());
+        pageResponse.setPageSize(page.getSize());
+        pageResponse.setTotalPages(page.getTotalPages());
+        pageResponse.setTotalElements(page.getTotalElements());
+        pageResponse.setLast(page.isLast());
+        return pageResponse;
+
+    }
+
     @Override
     public User getUserById(Long userId) throws QuizException {
         Optional<User> optionalUser=userRepo.findById(userId);

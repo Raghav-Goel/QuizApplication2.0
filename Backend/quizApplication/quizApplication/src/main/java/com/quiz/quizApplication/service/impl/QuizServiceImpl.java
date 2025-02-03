@@ -1,5 +1,6 @@
 package com.quiz.quizApplication.service.impl;
 
+import com.quiz.quizApplication.Utility.PageResponse;
 import com.quiz.quizApplication.Utility.Response;
 import com.quiz.quizApplication.entity.Question;
 import com.quiz.quizApplication.entity.Quiz;
@@ -10,6 +11,8 @@ import com.quiz.quizApplication.service.QuizQuestionService;
 import com.quiz.quizApplication.service.QuizService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -31,6 +34,19 @@ public class QuizServiceImpl implements QuizService {
     public boolean isQuestionPresentInAnyQuiz(Long questionId) {
         //Checks if a specific question is present in any quiz.
         return quizQuestionService.isQuestionPresentInAnyQuiz(questionId);
+    }
+    @Override
+    public PageResponse<Quiz> getAllQuiz(int pageNum, int pageSize) {
+        PageRequest pageRequest= PageRequest.of(pageNum,pageSize);
+        Page<Quiz> page=quizRepo.findAll(pageRequest);
+        PageResponse<Quiz> pageResponse=new PageResponse<>();
+        pageResponse.setList(page.getContent());
+        pageResponse.setPageNumber(page.getNumber());
+        pageResponse.setPageSize(page.getSize());
+        pageResponse.setTotalPages(page.getTotalPages());
+        pageResponse.setTotalElements(page.getTotalElements());
+        pageResponse.setLast(page.isLast());
+        return pageResponse;
     }
     @Override
     public Quiz getQuizById(Long id) throws QuizException {

@@ -1,8 +1,10 @@
 package com.quiz.quizApplication.service.impl;
 
+import com.quiz.quizApplication.Utility.PageResponse;
 import com.quiz.quizApplication.Utility.Response;
 import com.quiz.quizApplication.entity.Options;
 import com.quiz.quizApplication.entity.Question;
+import com.quiz.quizApplication.entity.User;
 import com.quiz.quizApplication.exception.QuizException;
 import com.quiz.quizApplication.repository.QuestionRepo;
 import com.quiz.quizApplication.service.OptionService;
@@ -10,9 +12,10 @@ import com.quiz.quizApplication.service.QuestionService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -24,6 +27,19 @@ public class QuestionServiceImpl implements QuestionService {
     OptionService optionService;
     @Autowired
     Environment environment;
+    @Override
+    public PageResponse<Question> getAllQuestions(int pageNum, int pageSize) {
+        PageRequest pageRequest= PageRequest.of(pageNum,pageSize);
+        Page<Question> page=questionRepo.findAll(pageRequest);
+        PageResponse<Question> pageResponse=new PageResponse<>();
+        pageResponse.setList(page.getContent());
+        pageResponse.setPageNumber(page.getNumber());
+        pageResponse.setPageSize(page.getSize());
+        pageResponse.setTotalPages(page.getTotalPages());
+        pageResponse.setTotalElements(page.getTotalElements());
+        pageResponse.setLast(page.isLast());
+        return pageResponse;
+    }
     @Override
     public Question getQuestionById(Long id) throws QuizException {
         Optional<Question> optionalQuestion=questionRepo.getQuestionByQuestionId(id);
@@ -67,6 +83,7 @@ public class QuestionServiceImpl implements QuestionService {
         return "Added option to the existing question successfully.";
     }
     @Override
+    @Transactional
     public String addExistingOptionForQuestion(Long qstId, Set<Long> optionsList) throws QuizException {
         Question question=getQuestionById(qstId);
         for(Long optionId:optionsList){

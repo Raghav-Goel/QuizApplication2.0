@@ -9,11 +9,13 @@ function App() {
   const [count, setCount] = useState(0)
 
   return (
-    <>
+    <div className="wrapper">
       <Header />
-      <Outlet/>
-      <Footer/>
-    </>
+      <div className="appMain">
+        <Outlet />
+      </div>
+      <Footer />
+    </div>
   );
 }
 
