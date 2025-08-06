@@ -5,7 +5,6 @@ import com.quiz.quizApplication.Utility.Response;
 import com.quiz.quizApplication.entity.Question;
 import com.quiz.quizApplication.entity.Quiz;
 import com.quiz.quizApplication.exception.QuizException;
-import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Set;
@@ -22,5 +21,5 @@ public interface QuizService {
 
     String deleteQuestionFromQuiz(Long quizId, Set<Long> qstIdList) throws QuizException;
 
-    String deleteQuizFromid(Long quizId);
+    String deleteQuizFromId(Long quizId);
 }

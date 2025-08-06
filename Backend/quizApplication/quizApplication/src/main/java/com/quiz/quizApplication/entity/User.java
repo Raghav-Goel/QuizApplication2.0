@@ -21,7 +21,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long userId;
     @NotNull
-    @Pattern(regexp="[A-Za-z]+( [A-Za-z]+)*", message="Name should contain only alphabets and space")
+    @Pattern(regexp="([A-Za-z]+)( [A-Za-z]+)*", message="Name should contain only alphabets and space")
     String name;
     String emailId;
     String password;

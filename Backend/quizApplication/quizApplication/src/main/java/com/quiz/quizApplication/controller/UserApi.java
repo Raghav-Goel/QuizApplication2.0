@@ -55,7 +55,7 @@ public class UserApi {
     //todo: The below method is still uncompleted.
     @PutMapping("/updateUser/{id}")
     public ResponseEntity<ApiResponse<String>> updateUser(@RequestBody User user,@PathVariable Long id)throws  QuizException{
-
-        return ResponseEntity.ok(new ApiResponse<>(true, "User updated", ""));
+        String msg=userService.updateUserDetails(user,id);
+        return ResponseEntity.ok(new ApiResponse<>(true, "User updated", msg));
     }
 }

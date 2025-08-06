@@ -59,7 +59,7 @@ public class QuizApi {
     }
     @DeleteMapping("/deleteQuiz/{quizId}")
     public ResponseEntity<ApiResponse<String>> deleteQuizFromId(@PathVariable Long quizId){
-        String msg= quizService.deleteQuizFromid(quizId);
+        String msg= quizService.deleteQuizFromId(quizId);
         return ResponseEntity.ok(new ApiResponse<>(true,"Quiz got deleted successfully",msg));
     }
 }

@@ -108,12 +108,11 @@ public class QuizServiceImpl implements QuizService {
             quiz.getQuestionList().remove(question);
             if(!isQuestionPresentInAnyQuiz(qstId))questionService.deleteQuestionById(qstId);
         }
-
         return "Questions removed successfully from quiz";
     }
 
     @Override
-    public String deleteQuizFromid(Long quizId) {
+    public String deleteQuizFromId(Long quizId) {
         quizRepo.deleteById(quizId);
         return "Quiz with quizId: "+quizId+" got deleted successfully";
     }

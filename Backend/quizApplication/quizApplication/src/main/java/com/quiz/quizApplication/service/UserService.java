@@ -23,5 +23,6 @@ public interface UserService {
     public String addQuizDetails(Long userId,Long quizId) throws QuizException;
     public String updateEmailId(Long userId,String newEmailId)  throws QuizException;
     public String updatePassword(Long userId,String password);
+    public String updateUserDetails(User user,Long userId);
 
 }

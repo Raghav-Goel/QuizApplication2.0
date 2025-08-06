@@ -102,14 +102,24 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String updateEmailId(Long userId, String newEmailId) throws QuizException{
-        User user=userRepo.findById(userId).orElseThrow(()->new QuizException(environment.getProperty("Service.USER_EMAIL_NOT_FOUND")));
+        User user=userRepo.findById(userId).orElseThrow(()->new QuizException(environment.getProperty("Service.USER_NOT_FOUND")));
         user.setEmailId(newEmailId);
         return "EmailId is updated successfully.";
     }
 
     @Override
     public String updatePassword(Long userId, String password) {
+        User user=userRepo.findById(userId).orElseThrow(()->new QuizException(environment.getProperty("Service.USER_NOT_FOUND")));
+        user.setPassword(password);
         return null;
+    }
+    @Override
+    public String updateUserDetails(User user,Long userId){
+        User user1=userRepo.findById(userId).orElseThrow(()->new QuizException(environment.getProperty("Service.USER_NOT_FOUND")));
+        user1.setPassword(user.getPassword());
+        user1.setEmailId(user.getEmailId());
+        user1.setPhoneNumber(user.getPhoneNumber());
+        return "Updated the user details successfully.";
     }
 
 }
