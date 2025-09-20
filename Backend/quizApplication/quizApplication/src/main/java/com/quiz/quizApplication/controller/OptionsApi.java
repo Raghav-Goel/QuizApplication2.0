@@ -14,17 +14,17 @@ public class OptionsApi {
     @Autowired
     OptionService optionService;
 
-    @GetMapping("/getOptionById")
-    public ResponseEntity<ApiResponse<Options>> getOptionById(Long optionId) throws QuizException {
+    @GetMapping("/getOptionById/{optionId}")
+    public ResponseEntity<ApiResponse<Options>> getOptionById(@PathVariable Long optionId) throws QuizException {
         Options options=optionService.getOptionsById(optionId);
         return new ResponseEntity<>(new ApiResponse<>(true,"Got option by id successfully.",options), HttpStatus.OK);
     }
     @PostMapping("/addOption")
-    public ResponseEntity<ApiResponse<Long>> addOption(Options options){
+    public ResponseEntity<ApiResponse<Long>> addOption(@RequestBody Options options){
         Long optId=optionService.addOption(options);
         return new ResponseEntity<>(new ApiResponse<>(true,"Created new Option successfully",optId),HttpStatus.CREATED);
     }
-    @PutMapping("/updateOption/{id}")
+    @PutMapping("/updateOption/{optId}")
     public ResponseEntity<ApiResponse<String>> updateOption(@PathVariable Long optId,@RequestParam String desp) throws QuizException {
         String msg= optionService.updateOption(optId,desp);
         return new ResponseEntity<>(new ApiResponse<>(true,"Update Successful",msg),HttpStatus.OK);

@@ -13,18 +13,13 @@ import java.util.Set;
 public interface QuestionService {
     public PageResponse<Question> getAllQuestions(int pageNum, int pageSize);
     public Question getQuestionById(Long id) throws QuizException;
-
-    public Question getQuestionByDescription(String desp) throws QuizException;
-    boolean checkAnsForResponse(Response response) throws QuizException;
-
+    public List<Question> getQuestionsByDescription(String desp) throws QuizException;
+    public boolean checkAnsForResponse(Response response) throws QuizException;
     public Long addQuestion(Question question);
-    public String updateQuestion(Question question);
     public String addOptionForQuestion(Long qstId, Set<Options> optionsList) throws QuizException;
-
+    public String addExistingOptionForQuestion(Long qstId, Set<Long> optionsList) throws QuizException;
+    public String updateQuestionCorrectAns(Long questionId,String correctAns);
+    public String updateQuestionDescription(Long qstId, String qstDescp) throws QuizException;
     public String deleteQuestionById(Long qstId);
     public String deleteOptionFromQuestion(Long qstId,Long optId) throws QuizException;
-
-    String addExistingOptionForQuestion(Long qstId, Set<Long> optionsList) throws QuizException;
-
-    String updateQuestionDescription(Long qstId, String qstDescp) throws QuizException;
 }

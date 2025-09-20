@@ -16,6 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -47,8 +48,8 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    public Question getQuestionByDescription(String desp) throws QuizException {
-        Optional<Question> optionalQuestion=questionRepo.getQuestionByDescription(desp);
+    public List<Question> getQuestionsByDescription(String desp) throws QuizException {
+        Optional<List<Question>> optionalQuestion=questionRepo.getQuestionsByDescription(desp);
         return optionalQuestion.orElseThrow(()->new QuizException(environment.getProperty("Service.QUESTION_DESCRIPTION_NOT_FOUND")));
     }
 
@@ -61,6 +62,7 @@ public class QuestionServiceImpl implements QuestionService {
 
 
     @Override
+    @Transactional
     public Long addQuestion(Question question) {
         System.out.println(question);
         questionRepo.save(question);
@@ -68,20 +70,15 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    public String updateQuestion(Question question) {
-        return null;
-    }
-
-    @Override
     @Transactional
     public String addOptionForQuestion(Long qstId, Set<Options> optionsList) throws QuizException {
-        //For now we are able to add duplicates as well, we needed to implement the login in which duplicates are not allowed.
         Question question=getQuestionById(qstId);
         for(Options options:optionsList){
             question.getOptionsList().add(options);
         }
         return "Added option to the existing question successfully.";
     }
+
     @Override
     @Transactional
     public String addExistingOptionForQuestion(Long qstId, Set<Long> optionsList) throws QuizException {
@@ -94,6 +91,15 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
+    @Transactional
+    public String updateQuestionCorrectAns(Long questionId,String correctAns) {
+        Question question=getQuestionById(questionId);
+        question.setCorrectAns(correctAns);
+        return "Updated the Correct Ans";
+    }
+
+    @Override
+    @Transactional
     public String updateQuestionDescription(Long qstId, String qstDescp) throws QuizException {
         Question question=getQuestionById(qstId);
         question.setQuestionText(qstDescp);
@@ -101,10 +107,12 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
+    @Transactional
     public String deleteQuestionById(Long qstId) {
         questionRepo.deleteById(qstId);
         return "Great Success";
     }
+
     @Override
     @Transactional
     public String deleteOptionFromQuestion(Long qstId,Long optId) throws QuizException {
@@ -114,6 +122,5 @@ public class QuestionServiceImpl implements QuestionService {
         optionService.deleteOption(optId);
         return "Option removed Successfully";
     }
-
 
 }

@@ -30,20 +30,20 @@ public class QuestionApi {
         return new ResponseEntity<>(new ApiResponse<>(true,"Getting all questions",pageResponse), HttpStatus.OK);
     }
 
-    @GetMapping("getQuestionDetails/{qstId}")
+    @GetMapping("/getQuestionDetails/{qstId}")
     public ResponseEntity<ApiResponse<Question>> getQuestionById(@PathVariable Long qstId) throws QuizException {
         Question question=questionService.getQuestionById(qstId);
         return ResponseEntity.ok(new ApiResponse<>(true, "Question found", question));
     }
-    @GetMapping("/{desp:[a-zA-Z &+-]*}")
-    public ResponseEntity<ApiResponse<Question>> getQuestionFromDescription(@PathVariable String desp) throws QuizException {
-        Question question=questionService.getQuestionByDescription(desp);
+    @GetMapping("/getQuestionsFromDescription")
+    public ResponseEntity<ApiResponse<List<Question>>> getQuestionsFromDescription(@RequestParam String desp) throws QuizException {
+        List<Question> question=questionService.getQuestionsByDescription(desp);
 //        return ResponseEntity.ok(new ApiResponse<>(true, "Question found", question));
-        return new ResponseEntity<>(new ApiResponse<>(true, "Question found", question),HttpStatus.OK);
+        return new ResponseEntity<>(new ApiResponse<>(true, "List of Questions that contains: "+desp, question),HttpStatus.OK);
     }
 
-    @PostMapping
-    public ResponseEntity<ApiResponse<Long>> saveQuestion(@RequestBody Question question){
+    @PostMapping("/addQuestion")
+    public ResponseEntity<ApiResponse<Long>> addQuestion(@RequestBody Question question){
         Long questionId= questionService.addQuestion(question);
         return ResponseEntity.ok(new ApiResponse<>(true,"Added question successfully",questionId));
     }
@@ -56,6 +56,11 @@ public class QuestionApi {
     public ResponseEntity<ApiResponse<String>> addExistingOptionsForQuestion(@RequestParam Long qstId, @RequestBody Set<Long> optionsList) throws QuizException {
         String msg=questionService.addExistingOptionForQuestion(qstId,optionsList);
         return ResponseEntity.ok(new ApiResponse<>(true,"Successfully updated the existing option of the question",msg));
+    }
+    @PutMapping("/updateQuestionCorrectAns")
+    public ResponseEntity<ApiResponse<String>> updateQuestionCorrectAns(@RequestParam Long qstId,@RequestParam String correctAns) throws QuizException {
+        String msg=questionService.updateQuestionCorrectAns(qstId,correctAns);
+        return  ResponseEntity.ok(new ApiResponse<>(true,"Updated the question description successfully",msg));
     }
     @PutMapping("/updateQuestionDescription")
     public ResponseEntity<ApiResponse<String>> updateQuestionDescription(@RequestParam Long qstId,@RequestParam String qstDescp) throws QuizException {
