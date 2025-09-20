@@ -20,6 +20,7 @@ public class UserQuiz {
     @JoinColumn(name = "quiz_id")
     Quiz quiz;
 
-    Integer marks;
+    Integer latestMarks;
+    Integer bestMarks;
     Integer attemptNumber;
 }

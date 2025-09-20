@@ -16,11 +16,11 @@ public interface UserService {
     public User getUserById(Long userId) throws QuizException;
     public User getUserByEmail(String emailId) throws QuizException;
     public List<UserQuiz> getUserAllQuizDetails(Long userId) throws QuizException;
-    public List<UserQuiz> getUserSpecificQuizDetails(Long userId,Long quizId) throws QuizException;
+    public UserQuiz getUserSpecificQuizDetails(Long userId,Long quizId) throws QuizException;
     public int evaluateQuizResponse(Long userId, Long quizId, List<Response> responseList) throws QuizException;
-
     public Long addUser(User user) throws QuizException;
     public String addQuizDetails(Long userId,Long quizId) throws QuizException;
+    public String createQuiz(Quiz quiz,Long userId);
     public String updateEmailId(Long userId,String newEmailId)  throws QuizException;
     public String updatePassword(Long userId,String password);
     public String updateUserDetails(User user,Long userId);

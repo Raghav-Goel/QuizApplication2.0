@@ -70,13 +70,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserQuiz> getUserSpecificQuizDetails(Long userId, Long quizId) throws QuizException {
+    public UserQuiz getUserSpecificQuizDetails(Long userId, Long quizId) throws QuizException {
         return userQuizService.getUserSpecificQuizDetails(userId,quizId);
     }
 
     @Override
     public int evaluateQuizResponse(Long userId, Long quizId, List<Response> responseList) throws QuizException {
         int marks=quizService.calculateQuizScore(responseList);
+        if(userQuizService.findMaxAttemptNumberByUserAndQuiz(userId,quizId)==0)addQuizDetails(userId,quizId);
         userQuizService.updateMarks(userId,quizId,marks);
         return marks;
     }
@@ -93,11 +94,17 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String addQuizDetails(Long userId,Long quizId) throws QuizException {
-        //todo: needed to add a check whether the quiz is already added to user or not.
         User user=getUserById(userId);
         Quiz quiz=quizService.getQuizById(quizId);
-        user.getSubmittedQuizzes().add(quiz);
+        user.getAttemptedQuizzes().add(quiz);
         return "Quiz has been added successfully to the user.";
+    }
+    @Override
+    public String createQuiz(Quiz quiz,Long userId){
+        Long quizId= quizService.createQuiz(quiz);
+        User user=getUserById(userId);
+        user.getCreatedQuizzes().add(quiz);
+        return "User: "+userId+" created the quiz with quizId: "+quizId;
     }
 
     @Override

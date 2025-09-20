@@ -14,7 +14,7 @@ public interface UserQuizRepo extends JpaRepository<UserQuiz,Long> {
     @Query("Select uq from UserQuiz uq where uq.user.userId=:userId")
     public Optional<List<UserQuiz>> getUserAllQuizDetails(@Param("userId") Long userId);
     @Query("Select uq from UserQuiz uq where uq.user.userId=:userId and uq.quiz.quizId=:quizId")
-    public Optional<List<UserQuiz>> getUserSpecificQuizDetails(@Param("userId") Long userId, @Param("quizId") Long quizId);
+    public Optional<UserQuiz> getUserSpecificQuizDetails(@Param("userId") Long userId, @Param("quizId") Long quizId);
     @Query("SELECT MAX(uq.attemptNumber) FROM UserQuiz uq WHERE uq.user.userId=:userId and uq.quiz.quizId=:quizId")
     Optional<Integer> findMaxAttemptNumberByUserAndQuiz(@Param("userId") Long userId, @Param("quizId") Long quizId);
 

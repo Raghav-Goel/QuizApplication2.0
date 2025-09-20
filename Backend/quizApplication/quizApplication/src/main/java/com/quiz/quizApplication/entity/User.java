@@ -28,8 +28,8 @@ public class User {
     String phoneNumber;
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name="user_id")
-    Set<UserQuiz> userQuiz=new HashSet<>();
+    List<Quiz> createdQuizzes=new ArrayList<>();
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name="user_quiz" , joinColumns = @JoinColumn(name="user_id"),inverseJoinColumns = @JoinColumn(name="quiz_id"))
-    Set<Quiz> submittedQuizzes=new HashSet<>();
+    Set<Quiz> attemptedQuizzes=new HashSet<>();
 }

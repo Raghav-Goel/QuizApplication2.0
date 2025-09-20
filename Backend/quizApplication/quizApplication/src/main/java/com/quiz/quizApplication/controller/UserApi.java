@@ -2,6 +2,7 @@ package com.quiz.quizApplication.controller;
 
 import com.quiz.quizApplication.Utility.PageResponse;
 import com.quiz.quizApplication.Utility.Response;
+import com.quiz.quizApplication.entity.Quiz;
 import com.quiz.quizApplication.entity.User;
 import com.quiz.quizApplication.exception.QuizException;
 import com.quiz.quizApplication.service.UserService;
@@ -46,6 +47,11 @@ public class UserApi {
     public ResponseEntity<ApiResponse<Long>> addUser(@RequestBody User user) throws QuizException {
         Long userId= userService.addUser(user);
         return ResponseEntity.ok(new ApiResponse<>(true, "User added", userId));
+    }
+    @PostMapping("/createQuiz/{userId}")
+    public ResponseEntity<ApiResponse<String>> createQuiz(@RequestBody Quiz quiz, @PathVariable Long userId) throws QuizException {
+        String msg= userService.createQuiz(quiz,userId);
+        return ResponseEntity.ok(new ApiResponse<>(true, "User added", msg));
     }
     @PutMapping("/addQuiz")
     public ResponseEntity<ApiResponse<String>> addQuizDetails(@RequestParam Long userId,@RequestParam Long quizId)throws  QuizException{
